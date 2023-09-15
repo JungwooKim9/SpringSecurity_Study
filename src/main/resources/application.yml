@@ -1,0 +1,19 @@
+server:
+  port: 9898
+  servlet:
+    encoding:
+      force-response: true
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_jung9k_shop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: user_jung9k
+    password: 1234
+
+  jwt:
+    token:
+      secret: hello
