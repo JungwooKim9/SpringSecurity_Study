@@ -4,7 +4,9 @@ import com.example.jung9k_shop.domain.User;
 import com.example.jung9k_shop.exception.AppException;
 import com.example.jung9k_shop.exception.ErrorCode;
 import com.example.jung9k_shop.repository.UserRepository;
+import com.example.jung9k_shop.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+
     private final BCryptPasswordEncoder encoder;
+
+    @Value("${jwt.token.secret}")
+    private String key;
+    private long expireTimeMs = 1000 * 60 * 60l;
 
     public String join(String userName, String password) {
 
@@ -43,10 +50,10 @@ public class UserService {
             throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력했습니다.");
         }
 
-        // 앞에서 Exception 안났으면 토큰 발행
-        
+        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), key, expireTimeMs);
 
-        return "token 리턴";
+        // 앞에서 Exception 안났으면 토큰 발행
+        return token;
     }
 
 }
