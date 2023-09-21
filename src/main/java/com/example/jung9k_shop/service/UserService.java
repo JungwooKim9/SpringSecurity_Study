@@ -18,8 +18,8 @@ public class UserService {
 
     private final BCryptPasswordEncoder encoder;
 
-    @Value("${jwt.token.secret}")
-    private String key;
+    @Value("${jwt.secret}")
+    private String secretKey;
     private long expireTimeMs = 1000 * 60 * 60l;
 
     public String join(String userName, String password) {
@@ -46,11 +46,11 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, userName + "이 없습니다."));
 
         // password 틀림
-        if(!encoder.matches(selectedUser.getPassword(), password)) {
+        if(!encoder.matches(password, selectedUser.getPassword())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력했습니다.");
         }
 
-        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), key, expireTimeMs);
+        String token = JwtTokenUtil.createToken(selectedUser.getUserName(), secretKey, expireTimeMs);
 
         // 앞에서 Exception 안났으면 토큰 발행
         return token;
