@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀
                 .and()
-            // .addFilterBefore(new JwtFilter(userService, key), UsernamePasswordAuthenticationFilter.class)
+            // 필터 사용 .addFilterBefore(new JwtFilter(userService, key), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
