@@ -33,12 +33,12 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // Join, Login은 언제나 가능
-             .antMatchers(HttpMethod.POST, "api/v1/reviews").authenticated()
+                .mvcMatchers(HttpMethod.POST, "/api/v1/reviews").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 사용하는 경우 씀
                 .and()
-            // 필터 사용 .addFilterBefore(new JwtFilter(userService, key), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(userService, key), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
